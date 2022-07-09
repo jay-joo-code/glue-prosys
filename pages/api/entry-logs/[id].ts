@@ -14,43 +14,42 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
     return
   }
 
-  if (!req?.query?.dateString) {
-    res
-      .status(401)
-      .send({ message: "Invalid request: No dateString specified" })
+  if (!req?.query?.id) {
+    res.status(401).send({ message: "Invalid request: No id specified" })
     return
   }
 
   switch (req.method) {
-    case "GET": {
-      const result = await prisma.entryLog.findFirst({
-        where: { dateString: req?.query?.dateString as string },
-      })
-      res.json(result)
-      break
-    }
-
-    // case "PUT": {
-    //   const userData = session
-    //     ? {
-    //         user: { connect: { email: session?.user?.email } },
-    //       }
-    //     : {}
-
-    //   const data = { ...req?.body, isValidated: !!session, ...userData }
-    //   delete data.id
-    //   delete data.createdAt
-    //   delete data.updatedAt
-    //   delete data.userId
-
-    //   const result = await prisma.task.update({
-    //     where: { id: Number(req?.query?.id) },
-    //     data,
+    // case "GET": {
+    //   const result = await prisma.entryLog.findMany({
+    //     where: { dateString: req?.query?.dateString as string },
     //   })
-
     //   res.json(result)
     //   break
     // }
+
+    case "PUT": {
+      console.log("REQUEST ")
+      const userData = session
+        ? {
+            user: { connect: { email: session?.user?.email } },
+          }
+        : {}
+
+      const data = { ...req?.body, isValidated: !!session, ...userData }
+      delete data.id
+      delete data.createdAt
+      delete data.updatedAt
+      delete data.userId
+
+      const result = await prisma.entryLog.update({
+        where: { id: Number(req?.query?.id) },
+        data,
+      })
+
+      res.json(result)
+      break
+    }
 
     // case "DELETE": {
     //   const result = await prisma.task.delete({

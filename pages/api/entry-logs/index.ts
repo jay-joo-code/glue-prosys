@@ -13,25 +13,24 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
 
   switch (req.method) {
     case "GET":
-      const tasks = await prisma.task.findMany({
+      const entryLogs = await prisma.entryLog.findMany({
         where: {
-          isValidated: true,
+          dateString: req?.query?.dateString as string,
         },
         include: {
           user: true,
         },
         orderBy: {
-          createdAt: "desc",
+          createdAt: "asc",
         },
-        skip: Number(req?.query?.page) * Number(req?.query?.limit),
-        take: Number(req?.query?.limit),
       })
-      res.send(tasks)
+      res.send(entryLogs)
       break
 
     case "POST":
       const data = session
         ? {
+            ...req?.body,
             user: { connect: { email: session?.user?.email } },
           }
         : {}

@@ -1,22 +1,31 @@
 import { Container } from "@mantine/core"
-import api from "lib/glue/api"
-import React, { useEffect } from "react"
+import date from "date-and-time"
+import { useState } from "react"
+import useSWR from "swr"
+import EntryLogItem from "./EntryLogItem"
 
 const EntryLogList = () => {
-  const createEntryLog = async () => {
-    api.post("/entry-logs", {
-      startTime: "1300",
-      endTime: "1400",
-      category: "game",
-      desc: "league",
-    })
-  }
+  const { data: entryLogs } = useSWR(
+    `/entry-logs?dateString=${date.format(new Date(), "YYYY-MM-DD")}`
+  )
+  const [focusIdx, setFocusIdx] = useState<number>(0)
 
-  useEffect(() => {
-    createEntryLog()
-  }, [])
+  console.log("focusIdx", focusIdx)
 
-  return <Container>EntryLogList</Container>
+  return (
+    <Container>
+      {entryLogs?.map((entryLog, idx) => (
+        <EntryLogItem
+          key={entryLog?.id}
+          idx={idx}
+          entryLog={entryLog}
+          isFocused={idx === focusIdx}
+          setFocusIdx={setFocusIdx}
+          maxIdx={entryLogs?.length - 1}
+        />
+      ))}
+    </Container>
+  )
 }
 
 export default EntryLogList
