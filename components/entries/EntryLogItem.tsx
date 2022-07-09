@@ -72,10 +72,16 @@ const EntryLogItem = ({
       }
     } else if (event.key === "ArrowUp") {
       setFocusIdx((idx) => (idx - 1 < 0 ? 0 : idx - 1))
+    } else if (
+      (event.key === "Backspace" || event.key === "Delete") &&
+      value?.length === 0
+    ) {
+      await deleteEntryLog()
+      setFocusIdx((idx) => (idx - 1 < 0 ? 0 : idx - 1))
     }
   }
 
-  const handleFocus = (event) => {
+  const handleFocus = () => {
     setFocusIdx(idx)
   }
 
