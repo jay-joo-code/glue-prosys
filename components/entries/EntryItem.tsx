@@ -1,16 +1,11 @@
 import { Card, Text } from "@mantine/core"
 import React from "react"
+import EntryLogCard from "./EntryLogCard"
 
 interface IEntryItemProps {}
 
 const EntryItem = ({}: IEntryItemProps) => {
-  return (
-    <Card>
-      <Text size="sm" weight={500} color="text">
-        Time Log
-      </Text>
-    </Card>
-  )
+  return <EntryLogCard />
 }
 
 export default EntryItem
