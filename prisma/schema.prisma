@@ -50,7 +50,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
-  tasks Task[]
+  tasks     Task[]
+  entryLogs EntryLog[]
 
   @@map(name: "users")
 }
@@ -75,4 +76,21 @@ model Task {
   name String? @default("")
 
   @@map(name: "tasks")
+}
+
+model EntryLog {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @updatedAt @map(name: "updated_at")
+  userId      Int?     @map("user_id")
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isValidated Boolean  @default(false)
+
+  dateString String  @default("") // "YYYY-MM-DD"
+  startTime  String? @default("")
+  endTime    String? @default("")
+  category   String? @default("")
+  desc       String? @default("")
+
+  @@map(name: "entry_logs")
 }
