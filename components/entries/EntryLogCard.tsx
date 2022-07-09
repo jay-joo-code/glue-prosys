@@ -9,7 +9,7 @@ const EntryLogCard = ({}: IEntryLogCardProps) => {
 
   return (
     <Card>
-      <Text size="sm" weight={500} color={theme.colors["text-blue"][1]} mb="md">
+      <Text size="sm" weight={700} color={theme.colors["text-blue"][1]} mb="md">
         Time log
       </Text>
       <EntryLogList />
