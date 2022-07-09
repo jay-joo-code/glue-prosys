@@ -63,7 +63,7 @@ const Header = () => {
                   cursor: "pointer",
                 })}
               >
-                Template
+                prosys
               </Text>
             </Link>
           </Flex>
