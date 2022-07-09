@@ -1,7 +1,8 @@
 import MobileContainer from "components/glue/MobileContainer"
 import ProsysNavHeader from "components/ProsysNavHeader"
+import React from "react"
 
-const Index = () => {
+const Overview = () => {
   return (
     <MobileContainer>
       <ProsysNavHeader />
@@ -9,4 +10,4 @@ const Index = () => {
   )
 }
 
-export default Index
+export default Overview
