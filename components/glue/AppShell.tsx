@@ -9,7 +9,13 @@ interface IAppShellProps {
 
 const AppShell = ({ children }: IAppShellProps) => {
   return (
-    <Flex direction="column" align="center">
+    <Flex
+      direction="column"
+      align="center"
+      sx={(theme) => ({
+        background: theme.colors.gray[0],
+      })}
+    >
       <Header />
       <Container
         py="sm"
