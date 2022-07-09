@@ -8,10 +8,10 @@ const AuthButton = () => {
   const { status, data } = useSession()
 
   const PUBLIC_NAV = [
-    {
-      label: "My tasks",
-      href: "/tasks/my-tasks",
-    },
+    // {
+    //   label: "My tasks",
+    //   href: "/tasks/my-tasks",
+    // },
   ]
 
   if (status !== "authenticated") {
