@@ -18,7 +18,7 @@ const ProsysNavHeader = () => {
     },
   ]
   return (
-    <Container mb="sm">
+    <Container mb="lg">
       <NavHeader navs={navs} />
     </Container>
   )
