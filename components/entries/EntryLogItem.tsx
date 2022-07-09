@@ -1,5 +1,5 @@
 import { Input } from "@mantine/core"
-import { useDebouncedValue, useFocusWithin } from "@mantine/hooks"
+import { useDebouncedValue } from "@mantine/hooks"
 import { EntryLog } from "@prisma/client"
 import date from "date-and-time"
 import useFocus from "hooks/glue/useFocus"
@@ -27,7 +27,6 @@ const EntryLogItem = ({
   const { mutate } = useSWRConfig()
   const [debouncedValue] = useDebouncedValue(value, 800)
   const { ref, focus } = useFocus()
-  const { ref: containerRef, focused: isDetectedFocus } = useFocusWithin()
 
   useEffect(() => {
     if (debouncedValue) {
@@ -41,14 +40,17 @@ const EntryLogItem = ({
   useEffect(() => {
     if (isFocused) {
       focus()
+    } else {
+      if (idx !== maxIdx && value?.length === 0) {
+        deleteEntryLog()
+      }
     }
   }, [isFocused])
 
-  useEffect(() => {
-    if (isDetectedFocus) {
-      setFocusIdx(idx)
-    }
-  }, [isDetectedFocus])
+  const deleteEntryLog = async () => {
+    await api.delete(`/entry-logs/${entryLog?.id}`)
+    mutate(`/entry-logs?dateString=${date.format(new Date(), "YYYY-MM-DD")}`)
+  }
 
   const handleChange = (event) => {
     setValue(event?.target?.value)
@@ -73,25 +75,28 @@ const EntryLogItem = ({
     }
   }
 
+  const handleFocus = (event) => {
+    setFocusIdx(idx)
+  }
+
   return (
-    <div ref={containerRef}>
-      <Input
-        ref={ref}
-        variant="unstyled"
-        value={value}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        py="0"
-        size="md"
-        sx={(theme) => ({
-          "& input": {
-            lineHeight: 1.8,
-            minHeight: "unset",
-            height: "unset",
-          },
-        })}
-      />
-    </div>
+    <Input
+      ref={ref}
+      variant="unstyled"
+      value={value}
+      onChange={handleChange}
+      onKeyDown={handleKeyDown}
+      onFocus={handleFocus}
+      py="0"
+      size="md"
+      sx={(theme) => ({
+        "& input": {
+          lineHeight: 1.8,
+          minHeight: "unset",
+          height: "unset",
+        },
+      })}
+    />
   )
 }
 

@@ -29,7 +29,6 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
     // }
 
     case "PUT": {
-      console.log("REQUEST ")
       const userData = session
         ? {
             user: { connect: { email: session?.user?.email } },
@@ -51,13 +50,13 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
       break
     }
 
-    // case "DELETE": {
-    //   const result = await prisma.task.delete({
-    //     where: { id: Number(req?.query?.id) },
-    //   })
-    //   res.json(result)
-    //   break
-    // }
+    case "DELETE": {
+      const result = await prisma.entryLog.delete({
+        where: { id: Number(req?.query?.id) },
+      })
+      res.json(result)
+      break
+    }
 
     default:
       res.status(500).send("Invalid http method")

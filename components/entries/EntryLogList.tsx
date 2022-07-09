@@ -10,8 +10,6 @@ const EntryLogList = () => {
   )
   const [focusIdx, setFocusIdx] = useState<number>(0)
 
-  console.log("focusIdx", focusIdx)
-
   return (
     <Container>
       {entryLogs?.map((entryLog, idx) => (
