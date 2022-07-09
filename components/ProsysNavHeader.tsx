@@ -18,7 +18,15 @@ const ProsysNavHeader = () => {
     },
   ]
   return (
-    <Container mb="lg">
+    <Container
+      mb="lg"
+      px="sm"
+      py="md"
+      sx={(theme) => ({
+        background: "white",
+        borderRadius: theme.radius.md,
+      })}
+    >
       <NavHeader navs={navs} />
     </Container>
   )
