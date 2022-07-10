@@ -5,10 +5,20 @@ import { useEffect, useState } from "react"
 import useSWR from "swr"
 import EntryLogItem from "./EntryLogItem"
 
+export const entryLogListQuery = [
+  `/glue/entry-logs`,
+  {
+    where: {
+      dateString: date.format(new Date(), "YYYY-MM-DD"),
+    },
+    orderBy: {
+      createdAt: "asc",
+    },
+  },
+]
+
 const EntryLogList = () => {
-  const { data: entryLogs, mutate } = useSWR(
-    `/glue/entry-logs?dateString=${date.format(new Date(), "YYYY-MM-DD")}`
-  )
+  const { data: entryLogs, mutate } = useSWR(entryLogListQuery)
   const [focusIdx, setFocusIdx] = useState<number>(0)
 
   const createEntryLog = async () => {

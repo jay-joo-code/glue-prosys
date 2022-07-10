@@ -7,6 +7,7 @@ import api from "lib/glue/api"
 import { useEffect, useState } from "react"
 import { useSWRConfig } from "swr"
 import { getEntryLogString, parseEntryLogString } from "util/entries"
+import { entryLogListQuery } from "./EntryLogList"
 
 interface IEntryLogItemProps {
   idx: number
@@ -31,7 +32,7 @@ const EntryLogItem = ({
   useEffect(() => {
     if (debouncedValue) {
       api.put(
-        `/entry-logs/${entryLog?.id}`,
+        `/glue/entry-logs/${entryLog?.id}`,
         parseEntryLogString(debouncedValue)
       )
     }
@@ -48,8 +49,8 @@ const EntryLogItem = ({
   }, [isFocused])
 
   const deleteEntryLog = async () => {
-    await api.delete(`/entry-logs/${entryLog?.id}`)
-    mutate(`/entry-logs?dateString=${date.format(new Date(), "YYYY-MM-DD")}`)
+    await api.delete(`/glue/entry-logs/${entryLog?.id}`)
+    mutate(entryLogListQuery)
   }
 
   const handleChange = (event) => {
@@ -59,13 +60,11 @@ const EntryLogItem = ({
   const handleKeyDown = async (event) => {
     if (event.key === "Enter" || event.key === "ArrowDown") {
       if (idx == maxIdx) {
-        await api.post("/entry-logs", {
+        await api.post("/glue/entry-logs", {
           dateString: date.format(new Date(), "YYYY-MM-DD"),
         })
 
-        mutate(
-          `/entry-logs?dateString=${date.format(new Date(), "YYYY-MM-DD")}`
-        )
+        mutate(entryLogListQuery)
         setFocusIdx((idx) => idx + 1)
       } else {
         setFocusIdx((idx) => idx + 1)
