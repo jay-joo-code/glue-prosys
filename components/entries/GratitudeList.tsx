@@ -6,7 +6,7 @@ import useSWR from "swr"
 import GratitudeItem from "./GratitudeItem"
 
 export const gratitudeListQuery = [
-  `/glue/gratitude`,
+  `/glue/gratitudes`,
   {
     where: {
       dateString: date.format(new Date(), "YYYY-MM-DD"),

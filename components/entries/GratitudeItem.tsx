@@ -1,13 +1,13 @@
 import { Input } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
-import { EntryLog, Gratitude } from "@prisma/client"
+import { Gratitude } from "@prisma/client"
 import date from "date-and-time"
 import useFocus from "hooks/glue/useFocus"
 import api from "lib/glue/api"
 import { useEffect, useState } from "react"
 import { useSWRConfig } from "swr"
-import { getEntryLogString, parseEntryLogString } from "util/entries"
-import { entryLogListQuery } from "./EntryLogList"
+import { parseEntryLogString } from "util/entries"
+import { gratitudeListQuery } from "./GratitudeList"
 
 interface IGratitudeItemProps {
   idx: number
@@ -50,7 +50,7 @@ const GratitudeItem = ({
 
   const deleteEntryLog = async () => {
     await api.delete(`/glue/gratitudes/${gratitude?.id}`)
-    mutate(entryLogListQuery)
+    mutate(gratitudeListQuery)
   }
 
   const handleChange = (event) => {
@@ -64,7 +64,7 @@ const GratitudeItem = ({
           dateString: date.format(new Date(), "YYYY-MM-DD"),
         })
 
-        mutate(entryLogListQuery)
+        mutate(gratitudeListQuery)
         setFocusIdx((idx) => idx + 1)
       } else {
         setFocusIdx((idx) => idx + 1)
