@@ -6,7 +6,6 @@ import useFocus from "hooks/glue/useFocus"
 import api from "lib/glue/api"
 import { useEffect, useState } from "react"
 import { useSWRConfig } from "swr"
-import { parseEntryLogString } from "util/entries"
 import { gratitudeListQuery } from "./GratitudeList"
 
 interface IGratitudeItemProps {
@@ -31,10 +30,7 @@ const GratitudeItem = ({
 
   useEffect(() => {
     if (debouncedValue) {
-      api.put(
-        `/glue/gratitudes/${gratitude?.id}`,
-        parseEntryLogString(debouncedValue)
-      )
+      api.put(`/glue/gratitudes/${gratitude?.id}`, { title: debouncedValue })
     }
   }, [debouncedValue])
 
