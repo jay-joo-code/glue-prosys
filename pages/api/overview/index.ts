@@ -1,6 +1,8 @@
 import prisma from "lib/glue/prisma"
 import type { NextApiRequest, NextApiResponse } from "next"
 import qs from "qs"
+import { getWeekDateStrings, timeDiff } from "util/entries"
+import { getMonday, getSunday } from "util/glue/dates"
 
 export default async function handle(
   req: NextApiRequest,
@@ -8,34 +10,56 @@ export default async function handle(
 ) {
   const query = qs.parse(req?.url?.split("?")[1])
 
-  if (!req?.query?.id) {
-    res.status(401).send({ message: "Invalid request: No id specified" })
-    return
-  }
-
   switch (req.method) {
     case "GET": {
-      query?.date
-      // get all this week's entry logs
-      const entryLogs = await prisma.entryLog.findMany({})
+      const date = new Date(query?.date as string)
+      const dateStrings = getWeekDateStrings(date)
 
-      /*
-// sum up the hours by categories
-{
-  social: 4,
-  webdev: 2
-}
+      const entryLogs = await prisma.entryLog.findMany({
+        where: {
+          dateString: { in: dateStrings },
+        },
+      })
 
-// reformat into a sorted array
-[
-  {
-    category: 'social',
-    hours: 6
-  },
-]
-*/
+      const counter = {}
 
-      res.json({})
+      entryLogs?.map((entryLog) => {
+        const diff = timeDiff(entryLog?.startTime, entryLog?.endTime)
+        const category = entryLog?.category?.toLowerCase()?.trim()
+
+        if (category?.length > 0) {
+          if (!(category in counter)) {
+            counter[category] = diff
+          } else {
+            const carryOver = Math.floor((counter[category][1] + diff[1]) / 60)
+            const mins = (counter[category][1] + diff[1]) % 60
+            counter[category] = [
+              counter[category][0] + diff[0] + carryOver,
+              mins,
+            ]
+          }
+        }
+      })
+
+      const entryLogOverview = Object.entries(counter)
+        .sort((a, b) => {
+          if (b[1][0] === a[1][0]) {
+            // if hours the same, sort by minutes
+            return b[1][1] - a[1][1]
+          }
+
+          return b[1][0] - a[1][0]
+        })
+        .reduce((acc, [key, val]) => {
+          const data = {
+            category: key,
+            hours: `${val[0]}${val[1] === 0 ? "" : ".5"}`,
+          }
+          acc.push(data)
+          return acc
+        }, [])
+
+      res.json(entryLogOverview)
       break
     }
 
