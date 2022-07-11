@@ -12,7 +12,7 @@ const EntryItem = ({ date }: IEntryItemProps) => {
 
   return (
     <Stack mt="lg">
-      <Text ml="xs" size="lg" weight={500} color={theme.colors["text-blue"][2]}>
+      <Text ml="xs" size="lg" weight={700} color={theme.colors["text-blue"][2]}>
         {dateAndTime.format(date, "MMM DD ddd")}
       </Text>
       <EntryLogCard date={date} />
