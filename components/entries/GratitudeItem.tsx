@@ -33,6 +33,7 @@ const GratitudeItem = ({
   useEffect(() => {
     if (debouncedValue && debouncedValue !== gratitude?.title) {
       api.put(`/glue/gratitudes/${gratitude?.id}`, { title: debouncedValue })
+      mutate(getGratitudeListQuery(date))
     }
   }, [debouncedValue])
 

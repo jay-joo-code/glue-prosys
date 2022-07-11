@@ -28,7 +28,7 @@ const EntryLogItem = ({
 }: IEntryLogItemProps) => {
   const [value, setValue] = useState<string>(getEntryLogString(entryLog))
   const { mutate } = useSWRConfig()
-  const [debouncedValue] = useDebouncedValue(value, 800)
+  const [debouncedValue] = useDebouncedValue(value, 500)
   const { ref, focus } = useFocus()
 
   useEffect(() => {
@@ -37,6 +37,7 @@ const EntryLogItem = ({
         `/glue/entry-logs/${entryLog?.id}`,
         parseEntryLogString(debouncedValue)
       )
+      mutate(getEntryLogListQuery(date))
     }
   }, [debouncedValue])
 
