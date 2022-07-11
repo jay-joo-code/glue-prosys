@@ -32,7 +32,7 @@ const EntryLogItem = ({
   const { ref, focus } = useFocus()
 
   useEffect(() => {
-    if (debouncedValue) {
+    if (debouncedValue && debouncedValue !== getEntryLogString(entryLog)) {
       api.put(
         `/glue/entry-logs/${entryLog?.id}`,
         parseEntryLogString(debouncedValue)

@@ -31,7 +31,7 @@ const GratitudeItem = ({
   const { ref, focus } = useFocus()
 
   useEffect(() => {
-    if (debouncedValue) {
+    if (debouncedValue && debouncedValue !== gratitude?.title) {
       api.put(`/glue/gratitudes/${gratitude?.id}`, { title: debouncedValue })
     }
   }, [debouncedValue])
