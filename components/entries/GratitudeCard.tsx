@@ -1,6 +1,5 @@
-import { Card, Container, Text, useMantineTheme } from "@mantine/core"
-import React from "react"
-import EntryLogList from "./EntryLogList"
+import { Card, Text, useMantineTheme } from "@mantine/core"
+import GratitudeList from "./GratitudeList"
 
 interface IEntryLogCardProps {}
 
@@ -10,9 +9,9 @@ const EntryLogCard = ({}: IEntryLogCardProps) => {
   return (
     <Card>
       <Text size="sm" weight={700} color={theme.colors["text-blue"][1]} mb="md">
-        Entry log
+        Gratitudes
       </Text>
-      <EntryLogList />
+      <GratitudeList />
     </Card>
   )
 }
