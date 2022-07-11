@@ -19,7 +19,6 @@ const ProsysNavHeader = () => {
   ]
   return (
     <Container
-      mb="lg"
       px="sm"
       py="md"
       sx={(theme) => ({

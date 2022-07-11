@@ -1,20 +1,22 @@
 import { Stack, Text, Title, useMantineTheme } from "@mantine/core"
-import date from "date-and-time"
+import dateAndTime from "date-and-time"
 import EntryLogCard from "./EntryLogCard"
 import GratitudeCard from "./GratitudeCard"
 
-interface IEntryItemProps {}
+interface IEntryItemProps {
+  date: Date
+}
 
-const EntryItem = ({}: IEntryItemProps) => {
+const EntryItem = ({ date }: IEntryItemProps) => {
   const theme = useMantineTheme()
 
   return (
-    <Stack>
+    <Stack mt="lg">
       <Text ml="xs" size="lg" weight={500} color={theme.colors["text-blue"][2]}>
-        {date.format(new Date(), "MMM DD ddd")}
+        {dateAndTime.format(date, "MMM DD ddd")}
       </Text>
-      <EntryLogCard />
-      <GratitudeCard />
+      <EntryLogCard date={date} />
+      <GratitudeCard date={date} />
     </Stack>
   )
 }

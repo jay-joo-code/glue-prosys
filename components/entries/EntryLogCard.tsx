@@ -2,9 +2,11 @@ import { Card, Container, Text, useMantineTheme } from "@mantine/core"
 import React from "react"
 import EntryLogList from "./EntryLogList"
 
-interface IEntryLogCardProps {}
+interface IEntryLogCardProps {
+  date: Date
+}
 
-const EntryLogCard = ({}: IEntryLogCardProps) => {
+const EntryLogCard = ({ date }: IEntryLogCardProps) => {
   const theme = useMantineTheme()
 
   return (
@@ -12,7 +14,7 @@ const EntryLogCard = ({}: IEntryLogCardProps) => {
       <Text size="sm" weight={700} color={theme.colors["text-blue"][1]} mb="md">
         Entry log
       </Text>
-      <EntryLogList />
+      <EntryLogList date={date} />
     </Card>
   )
 }

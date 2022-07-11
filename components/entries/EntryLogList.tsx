@@ -1,15 +1,16 @@
 import { Container } from "@mantine/core"
-import date from "date-and-time"
+import { useFocusWithin } from "@mantine/hooks"
+import dateAndTime from "date-and-time"
 import api from "lib/glue/api"
 import { useEffect, useState } from "react"
 import useSWR from "swr"
 import EntryLogItem from "./EntryLogItem"
 
-export const entryLogListQuery = [
+export const getEntryLogListQuery = (date: Date) => [
   `/glue/entry-logs`,
   {
     where: {
-      dateString: date.format(new Date(), "YYYY-MM-DD"),
+      dateString: dateAndTime.format(date, "YYYY-MM-DD"),
     },
     orderBy: {
       createdAt: "asc",
@@ -17,13 +18,18 @@ export const entryLogListQuery = [
   },
 ]
 
-const EntryLogList = () => {
-  const { data: entryLogs, mutate } = useSWR(entryLogListQuery)
+interface IEntryLogListProps {
+  date: Date
+}
+
+const EntryLogList = ({ date }: IEntryLogListProps) => {
+  const { data: entryLogs, mutate } = useSWR(getEntryLogListQuery(date))
   const [focusIdx, setFocusIdx] = useState<number>(0)
+  const { ref, focused } = useFocusWithin()
 
   const createEntryLog = async () => {
     await api.post("/glue/entry-logs", {
-      dateString: date.format(new Date(), "YYYY-MM-DD"),
+      dateString: dateAndTime.format(date, "YYYY-MM-DD"),
     })
 
     mutate()
@@ -36,13 +42,14 @@ const EntryLogList = () => {
   }, [entryLogs])
 
   return (
-    <Container>
+    <Container ref={ref}>
       {entryLogs?.map((entryLog, idx) => (
         <EntryLogItem
           key={entryLog?.id}
           idx={idx}
+          date={date}
           entryLog={entryLog}
-          isFocused={idx === focusIdx}
+          isFocused={focused && idx === focusIdx}
           setFocusIdx={setFocusIdx}
           maxIdx={entryLogs?.length - 1}
         />

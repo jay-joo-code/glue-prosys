@@ -1,16 +1,17 @@
 import { Input } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { EntryLog } from "@prisma/client"
-import date from "date-and-time"
+import dateAndTime from "date-and-time"
 import useFocus from "hooks/glue/useFocus"
 import api from "lib/glue/api"
 import { useEffect, useState } from "react"
 import { useSWRConfig } from "swr"
 import { getEntryLogString, parseEntryLogString } from "util/entries"
-import { entryLogListQuery } from "./EntryLogList"
+import { getEntryLogListQuery } from "./EntryLogList"
 
 interface IEntryLogItemProps {
   idx: number
+  date: Date
   entryLog: EntryLog
   isFocused: boolean
   setFocusIdx: React.Dispatch<React.SetStateAction<number>>
@@ -19,6 +20,7 @@ interface IEntryLogItemProps {
 
 const EntryLogItem = ({
   idx,
+  date,
   entryLog,
   isFocused,
   setFocusIdx,
@@ -50,7 +52,7 @@ const EntryLogItem = ({
 
   const deleteEntryLog = async () => {
     await api.delete(`/glue/entry-logs/${entryLog?.id}`)
-    mutate(entryLogListQuery)
+    mutate(getEntryLogListQuery(date))
   }
 
   const handleChange = (event) => {
@@ -61,10 +63,10 @@ const EntryLogItem = ({
     if (event.key === "Enter" || event.key === "ArrowDown") {
       if (idx == maxIdx) {
         await api.post("/glue/entry-logs", {
-          dateString: date.format(new Date(), "YYYY-MM-DD"),
+          dateString: dateAndTime.format(date, "YYYY-MM-DD"),
         })
 
-        mutate(entryLogListQuery)
+        mutate(getEntryLogListQuery(date))
         setFocusIdx((idx) => idx + 1)
       } else {
         setFocusIdx((idx) => idx + 1)
