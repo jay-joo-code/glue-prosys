@@ -59,7 +59,7 @@ export default async function handle(
           return acc
         }, [])
 
-      res.json(entryLogOverview)
+      res.json({ entryLogOverview })
       break
     }
 

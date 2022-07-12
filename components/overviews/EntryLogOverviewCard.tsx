@@ -3,17 +3,13 @@ import Flex from "components/glue/Flex"
 import useSWR from "swr"
 
 interface IEntryLogOverviewCardProps {
-  date: Date
+  entryLogOverview: any
 }
 
-const EntryLogOverviewCard = ({ date }: IEntryLogOverviewCardProps) => {
+const EntryLogOverviewCard = ({
+  entryLogOverview,
+}: IEntryLogOverviewCardProps) => {
   const theme = useMantineTheme()
-  const { data: entryLogOverview } = useSWR([
-    "/overview",
-    {
-      date,
-    },
-  ])
 
   return (
     <Card>
