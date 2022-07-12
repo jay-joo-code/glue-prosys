@@ -1,39 +1,42 @@
 import { Input } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
-import { Gratitude } from "@prisma/client"
+import { Achievement, Gratitude } from "@prisma/client"
 import dateAndTime from "date-and-time"
 import useFocus from "hooks/glue/useFocus"
 import api from "lib/glue/api"
 import { useEffect, useState } from "react"
 import { useSWRConfig } from "swr"
-import { getGratitudeListQuery } from "./GratitudeList"
+import { getEntryCardListQuery } from "./EntryCardList"
 
-interface IGratitudeItemProps {
+interface IEntryCardItemProps {
   idx: number
   date: Date
-  gratitude: Gratitude
+  variant: "gratitude" | "achievement"
+  item: Gratitude | Achievement
   isFocused: boolean
   setFocusIdx: React.Dispatch<React.SetStateAction<number>>
   maxIdx: number
 }
 
-const GratitudeItem = ({
+const EntryCardItem = ({
   idx,
   date,
-  gratitude,
+  variant,
+  item,
   isFocused,
   setFocusIdx,
   maxIdx,
-}: IGratitudeItemProps) => {
-  const [value, setValue] = useState<string>(gratitude?.title)
+}: IEntryCardItemProps) => {
+  const [value, setValue] = useState<string>(item?.title)
   const { mutate } = useSWRConfig()
   const [debouncedValue] = useDebouncedValue(value, 800)
   const { ref, focus } = useFocus()
+  const endpoint = variant === "gratitude" ? "gratitudes" : "achievements"
 
   useEffect(() => {
-    if (debouncedValue && debouncedValue !== gratitude?.title) {
-      api.put(`/glue/gratitudes/${gratitude?.id}`, { title: debouncedValue })
-      mutate(getGratitudeListQuery(date))
+    if (debouncedValue && debouncedValue !== item?.title) {
+      api.put(`/glue/${endpoint}/${item?.id}`, { title: debouncedValue })
+      mutate(getEntryCardListQuery(date, variant))
     }
   }, [debouncedValue])
 
@@ -42,14 +45,14 @@ const GratitudeItem = ({
       focus()
     } else {
       if (idx !== maxIdx && value?.length === 0) {
-        deleteEntryLog()
+        deleteItem()
       }
     }
   }, [isFocused])
 
-  const deleteEntryLog = async () => {
-    await api.delete(`/glue/gratitudes/${gratitude?.id}`)
-    mutate(getGratitudeListQuery(date))
+  const deleteItem = async () => {
+    await api.delete(`/glue/${endpoint}/${item?.id}`)
+    mutate(getEntryCardListQuery(date, variant))
   }
 
   const handleChange = (event) => {
@@ -59,11 +62,11 @@ const GratitudeItem = ({
   const handleKeyDown = async (event) => {
     if (event.key === "Enter" || event.key === "ArrowDown") {
       if (idx == maxIdx) {
-        await api.post("/glue/gratitudes", {
+        await api.post(`/glue/${endpoint}`, {
           dateString: dateAndTime.format(date, "YYYY-MM-DD"),
         })
 
-        mutate(getGratitudeListQuery(date))
+        mutate(getEntryCardListQuery(date, variant))
         setFocusIdx((idx) => idx + 1)
       } else {
         setFocusIdx((idx) => idx + 1)
@@ -74,7 +77,7 @@ const GratitudeItem = ({
       (event.key === "Backspace" || event.key === "Delete") &&
       value?.length === 0
     ) {
-      await deleteEntryLog()
+      await deleteItem()
       setFocusIdx((idx) => (idx - 1 < 0 ? 0 : idx - 1))
     }
   }
@@ -104,4 +107,4 @@ const GratitudeItem = ({
   )
 }
 
-export default GratitudeItem
+export default EntryCardItem
