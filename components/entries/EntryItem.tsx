@@ -2,6 +2,7 @@ import { Stack, Text, Title, useMantineTheme } from "@mantine/core"
 import dateAndTime from "date-and-time"
 import EntryLogCard from "./EntryLogCard"
 import GratitudeCard from "./GratitudeCard"
+import ThoughtCard from "./ThoughtCard"
 
 interface IEntryItemProps {
   date: Date
@@ -17,6 +18,7 @@ const EntryItem = ({ date }: IEntryItemProps) => {
       </Text>
       <EntryLogCard date={date} />
       <GratitudeCard date={date} />
+      <ThoughtCard date={date} />
     </Stack>
   )
 }
