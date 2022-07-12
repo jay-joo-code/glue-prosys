@@ -68,6 +68,8 @@ const ThoughtCard = ({ date }: IThoughtCardProps) => {
         Thoughts
       </Text>
       <Textarea
+        autosize
+        maxRows={8}
         variant="unstyled"
         value={value}
         onChange={handleChange}
