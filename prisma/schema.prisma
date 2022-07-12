@@ -53,6 +53,7 @@ model User {
   tasks      Task[]
   entryLogs  EntryLog[]
   gratitudes Gratitude[]
+  thoughts   Thought[]
 
   @@map(name: "users")
 }
@@ -108,4 +109,18 @@ model Gratitude {
   title      String? @default("")
 
   @@map(name: "gratitudes")
+}
+
+model Thought {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now()) @map(name: "created_at")
+  updatedAt   DateTime @updatedAt @map(name: "updated_at")
+  userId      Int?     @map("user_id")
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isValidated Boolean  @default(false)
+
+  dateString String @default("") // "YYYY-MM-DD"
+  text       String @default("")
+
+  @@map(name: "thoughts")
 }
