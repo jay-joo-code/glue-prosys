@@ -61,7 +61,7 @@ const EntryLogItem = ({
   }
 
   const handleKeyDown = async (event) => {
-    if (event.key === "Enter" || event.key === "ArrowDown") {
+    if (event.key === "ArrowDown") {
       if (idx == maxIdx) {
         await api.post("/glue/entry-logs", {
           dateString: dateAndTime.format(date, "YYYY-MM-DD"),
@@ -72,6 +72,13 @@ const EntryLogItem = ({
       } else {
         setFocusIdx((idx) => idx + 1)
       }
+    } else if (event.key === "Enter") {
+      await api.post("/glue/entry-logs", {
+        dateString: dateAndTime.format(date, "YYYY-MM-DD"),
+      })
+
+      mutate(getEntryLogListQuery(date))
+      setFocusIdx((idx) => idx + 1)
     } else if (event.key === "ArrowUp") {
       setFocusIdx((idx) => (idx - 1 < 0 ? 0 : idx - 1))
     } else if (
