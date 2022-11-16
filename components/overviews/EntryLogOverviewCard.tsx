@@ -13,12 +13,12 @@ const EntryLogOverviewCard = ({
 
   return (
     <Card>
-      <Text size="sm" weight={700} color={theme.colors["text-blue"][1]} mb="md">
+      <Text size="sm" weight={700} color={theme.colors?.text[1]} mb="md">
         Entry log
       </Text>
       {entryLogOverview?.map(({ category, hours }) => (
         <Container key={category} mb="xs">
-          <Text size="sm" color={theme.colors["text-blue"][4]}>
+          <Text size="sm" color={theme.colors?.text[4]}>
             {category}
           </Text>
           <Flex align="center" spacing="xs">
@@ -31,7 +31,7 @@ const EntryLogOverviewCard = ({
                 width: `${(hours / entryLogOverview[0]?.hours) * 100 - 15}%`,
               })}
             />
-            <Text size="sm" weight={500} color={theme.colors["text-blue"][2]}>
+            <Text size="sm" weight={500} color={theme.colors?.text[2]}>
               {hours}
             </Text>
           </Flex>

@@ -1,6 +1,6 @@
 import { Container } from "@mantine/core"
 import EntryItem from "components/entries/EntryItem"
-import MobileContainer from "components/glue/MobileContainer"
+import PageContainer from "components/glue/PageContainer"
 import ProsysNavHeader from "components/ProsysNavHeader"
 import { useState } from "react"
 import InfiniteScrollComponent from "react-infinite-scroll-component"
@@ -18,7 +18,7 @@ const Index = () => {
   }
 
   return (
-    <MobileContainer>
+    <PageContainer variant="mobile-only">
       <ProsysNavHeader />
       <InfiniteScrollComponent
         dataLength={dates?.length}
@@ -36,7 +36,7 @@ const Index = () => {
           <EntryItem key={date?.toString()} date={date} />
         ))}
       </InfiniteScrollComponent>
-    </MobileContainer>
+    </PageContainer>
   )
 }
 

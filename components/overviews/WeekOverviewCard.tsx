@@ -12,12 +12,12 @@ const WeekOverviewCard = ({ data, cardTitle }: IWeekOverviewCardProps) => {
 
   return (
     <Card>
-      <Text size="sm" weight={700} color={theme.colors["text-blue"][1]} mb="md">
+      <Text size="sm" weight={700} color={theme.colors?.text[1]} mb="md">
         {cardTitle}
       </Text>
       {data?.map(({ category }) => (
         <Container key={category} mb="xs">
-          <Text size="sm" color={theme.colors["text-blue"][4]}>
+          <Text size="sm" color={theme.colors?.text[4]}>
             {category}
           </Text>
         </Container>

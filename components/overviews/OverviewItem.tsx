@@ -26,7 +26,7 @@ const OverviewItem = ({ date }: IOverviewItemProps) => {
 
   return (
     <Stack mt="lg">
-      <Text ml="xs" size="lg" weight={700} color={theme.colors["text-blue"][2]}>
+      <Text ml="xs" size="lg" weight={700} color={theme.colors?.text[2]}>
         {mondayString} - {sundayString}
       </Text>
       <EntryLogOverviewCard entryLogOverview={overviews?.entryLogOverview} />

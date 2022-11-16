@@ -1,14 +1,13 @@
-import MobileContainer from "components/glue/MobileContainer"
+import PageContainer from "components/glue/PageContainer"
 import OverviewItem from "components/overviews/OverviewItem"
 import ProsysNavHeader from "components/ProsysNavHeader"
-import React from "react"
 
 const Overview = () => {
   return (
-    <MobileContainer>
+    <PageContainer variant="mobile-only">
       <ProsysNavHeader />
       <OverviewItem date={new Date()} />
-    </MobileContainer>
+    </PageContainer>
   )
 }
 

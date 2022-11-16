@@ -11,7 +11,7 @@ const EntryCard = ({ date, variant }: IEntryCardProps) => {
 
   return (
     <Card>
-      <Text size="sm" weight={700} color={theme.colors["text-blue"][1]} mb="md">
+      <Text size="sm" weight={700} color={theme.colors?.text[1]} mb="md">
         {variant === "gratitude" ? "Gratitudes" : "Achievements"}
       </Text>
       <EntryCardList date={date} variant={variant} />

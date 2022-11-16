@@ -64,7 +64,7 @@ const ThoughtCard = ({ date }: IThoughtCardProps) => {
 
   return (
     <Card>
-      <Text size="sm" weight={700} color={theme.colors["text-blue"][1]} mb="md">
+      <Text size="sm" weight={700} color={theme.colors?.text[1]} mb="md">
         Thoughts
       </Text>
       <Textarea

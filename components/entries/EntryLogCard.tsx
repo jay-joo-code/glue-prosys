@@ -11,7 +11,7 @@ const EntryLogCard = ({ date }: IEntryLogCardProps) => {
 
   return (
     <Card>
-      <Text size="sm" weight={700} color={theme.colors["text-blue"][1]} mb="md">
+      <Text size="sm" weight={700} color={theme.colors?.text[1]} mb="md">
         Entry log
       </Text>
       <EntryLogList date={date} />
