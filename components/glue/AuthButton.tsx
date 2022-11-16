@@ -1,7 +1,6 @@
 import { Avatar, Button, Menu } from "@mantine/core"
 import { signOut, useSession } from "next-auth/react"
 import Link from "next/link"
-import MenuDivider from "./MenuDivider"
 import MenuItem from "./MenuItem"
 
 const AuthButton = () => {
@@ -25,13 +24,8 @@ const AuthButton = () => {
   }
 
   return (
-    <Menu
-      styles={(theme) => ({
-        root: {
-          padding: "0 !important",
-        },
-      })}
-      control={
+    <Menu position="bottom-end" width={140}>
+      <Menu.Target>
         <Avatar
           src={data?.user?.image}
           radius="xl"
@@ -41,19 +35,20 @@ const AuthButton = () => {
             cursor: "pointer",
           })}
         />
-      }
-    >
-      {PUBLIC_NAV?.map(({ label, href }) => (
-        <MenuItem key={label} href={href}>
-          {label}
+      </Menu.Target>
+      <Menu.Dropdown>
+        {PRIVATE_NAV?.map(({ label, href }) => (
+          <MenuItem key={label} href={href}>
+            {label}
+          </MenuItem>
+        ))}
+
+        <Menu.Divider />
+
+        <MenuItem onClick={() => signOut({ redirect: false })} color="red">
+          Sign out
         </MenuItem>
-      ))}
-
-      {PUBLIC_NAV?.length > 0 && <MenuDivider />}
-
-      <MenuItem onClick={() => signOut({ redirect: false })} color="red">
-        Sign out
-      </MenuItem>
+      </Menu.Dropdown>
     </Menu>
   )
 }

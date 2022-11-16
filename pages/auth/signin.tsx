@@ -1,9 +1,10 @@
-import { Button, Image, Stack, Text, Title } from "@mantine/core"
+import { Button, Stack, Text, Title } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
 import Flex from "components/glue/Flex"
 import { GetServerSideProps } from "next"
 import { Provider } from "next-auth/providers"
 import { getProviders, getSession, signIn } from "next-auth/react"
+import Image from "next/image"
 import { useRouter } from "next/router"
 import { useEffect, useMemo } from "react"
 
@@ -12,7 +13,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   if (session) {
     return {
-      redirect: { destination: "/" },
       props: { providers: [] },
     }
   }
@@ -24,13 +24,21 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 }
 
-export interface ISigninProps {
+interface ISigninProps {
   providers?: Provider
 }
 
 const Signin = ({ providers }: ISigninProps) => {
   // TODO: handle OAuthAccountNotLinked error
   // by auto linking accounts
+
+  // sign out if already signed in
+  // const { status } = useSession()
+  // useEffect(() => {
+  //   if (status === "authenticated") {
+  //     signOut({ redirect: true })
+  //   }
+  // }, [status])
 
   const ERROR_TO_MESSAGE = useMemo(
     () => ({
@@ -73,20 +81,16 @@ const Signin = ({ providers }: ISigninProps) => {
       <Image
         src="/glue/logos/google-logo.png"
         alt="google logo"
-        sx={(theme) => ({
-          height: "20px",
-          width: "20px",
-        })}
+        width="20px"
+        height="20px"
       />
     ),
     GitHub: (
       <Image
         src="/glue/logos/github-logo.png"
         alt="github logo"
-        sx={(theme) => ({
-          height: "20px",
-          width: "20px",
-        })}
+        width="20px"
+        height="20px"
       />
     ),
   }
@@ -96,11 +100,11 @@ const Signin = ({ providers }: ISigninProps) => {
       align="center"
       justify="center"
       sx={(theme) => ({
-        height: "90vh",
+        height: "70vh",
       })}
     >
-      <Stack>
-        <Title order={1}>Login</Title>
+      <Stack spacing="xs">
+        <Title order={1}>Sign in</Title>
         <Text color="dimmed">Sign in to access your account</Text>
         <Stack
           mt="lg"

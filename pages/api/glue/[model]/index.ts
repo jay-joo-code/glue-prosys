@@ -2,13 +2,21 @@ import { withSentry } from "@sentry/nextjs"
 import crudEndpoints from "constants/crudEndpoints"
 import type { NextApiRequest, NextApiResponse } from "next"
 import { getSession } from "next-auth/react"
+import parseQuery from "util/glue/parseQuery"
 import qs from "qs"
 
 async function handle(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req })
-  const query = qs.parse(req?.url?.split("?")[1])
+  const queryString = req?.url?.split("?")[1]
+  const { parseConfig } = qs.parse(queryString) as any
+  const query = parseQuery(queryString, {
+    parseNumbers: parseConfig?.parseNumbers !== "false",
+    parseBooleans: parseConfig?.parseBooleans !== "false",
+  })
   const model = crudEndpoints[req?.query?.model as string]?.model
+
   delete query?.model
+  delete query?.parseConfig
 
   switch (req.method) {
     case "GET":
@@ -22,11 +30,9 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
       delete query?.limit
 
       const docs = await model.findMany({
-        include: {
-          user: true,
-        },
         orderBy: {
-          createdAt: "asc",
+          // TODO: not working
+          updatedAt: "asc",
         },
         skip,
         take,
@@ -39,7 +45,7 @@ async function handle(req: NextApiRequest, res: NextApiResponse) {
     case "POST":
       const sessionData = session
         ? {
-            user: { connect: { email: session?.user?.email } },
+            userId: session?.user?.id,
           }
         : {}
 

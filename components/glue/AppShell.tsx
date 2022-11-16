@@ -2,6 +2,7 @@ import { Container } from "@mantine/core"
 import React from "react"
 import Flex from "./Flex"
 import Header from "./Header"
+import Footer from "./Footer"
 
 interface IAppShellProps {
   children: React.ReactNode
@@ -9,13 +10,7 @@ interface IAppShellProps {
 
 const AppShell = ({ children }: IAppShellProps) => {
   return (
-    <Flex
-      direction="column"
-      align="center"
-      sx={(theme) => ({
-        background: theme.colors.gray[0],
-      })}
-    >
+    <Flex direction="column" align="center" spacing={0}>
       <Header />
       <Container
         py="sm"
@@ -23,15 +18,17 @@ const AppShell = ({ children }: IAppShellProps) => {
         sx={(theme) => ({
           width: "100%",
           minHeight: "100vh",
+          color: theme.colors.text[3],
 
-          [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
-            width: "85vw",
+          [`@media (min-width: ${theme.breakpoints.md}px)`]: {
+            width: theme.breakpoints.md,
             maxWidth: "unset",
           },
         })}
       >
         {children}
       </Container>
+      <Footer />
     </Flex>
   )
 }

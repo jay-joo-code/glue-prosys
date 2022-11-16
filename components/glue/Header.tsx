@@ -5,7 +5,8 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core"
-import useIsMobile from "hooks/glue/isMobile"
+import appConfig from "constants/appConfig"
+import useIsDevice from "hooks/glue/useIsDevice"
 import Link from "next/link"
 import { useState } from "react"
 import AuthButton from "./AuthButton"
@@ -16,7 +17,7 @@ const Header = () => {
   const [opened, setOpened] = useState<boolean>(false)
   const theme = useMantineTheme()
   const HEIGHT = 48
-  const isMobile = useIsMobile()
+  const { isMobile } = useIsDevice()
 
   return (
     <Container>
@@ -34,26 +35,18 @@ const Header = () => {
             zIndex: 2,
             height: `${HEIGHT}px`,
             background: "rgba(255, 255, 255, 0.92)",
-
-            [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
-              paddingLeft: 0,
-              paddingRight: 0,
-            },
           })}
-          py="sm"
-          px="md"
         >
           <Flex
             justify="space-between"
+            py="sm"
+            px="md"
             sx={(theme) => ({
               width: "100%",
-
-              [`@media (min-width: ${theme.breakpoints.xs}px)`]: {
-                width: "85vw",
-              },
+              maxWidth: theme.breakpoints.md,
             })}
           >
-            <Flex>
+            <Flex spacing="xs">
               <MediaQuery largerThan="xs" styles={{ display: "none" }}>
                 <Burger
                   opened={opened}
@@ -72,9 +65,12 @@ const Header = () => {
                     cursor: "pointer",
                   })}
                 >
-                  prosys
+                  {appConfig.name}
                 </Text>
               </Link>
+              {/* <Text size="sm" weight={600} color="dimmed">
+                beta
+              </Text> */}
             </Flex>
             <Flex>
               {!isMobile && <NavList />}

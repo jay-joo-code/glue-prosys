@@ -18,16 +18,16 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
           // because a lot of default component styles
           // depend on them
           brand: [
-            "#F7FCFF",
-            "#F3FAFF",
-            "#E7F5FF",
-            "#74C0FC",
-            "#4DABF7",
-            "#339AF0",
-            "#228BE6",
-            "#1C7ED6",
-            "#1971C2",
-            "#1864AB",
+            "#F6F9FF",
+            "#EDF2FF",
+            "#DBE4FF",
+            "#BAC8FF",
+            "#91A7FF",
+            "#748FFC",
+            "#5C7CFA",
+            "#4C6EF5",
+            "#4263EB",
+            "#3B5BDB",
           ],
           "button-gray": [
             "#F5F5F5",
@@ -43,8 +43,9 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
           ],
 
           // text array values
-          // [muted, light, regular, dark]
-          "text-blue": ["#BCC8D5", "#9AADC0", "#617181", "#3B4550"],
+          //  0      1           2      3
+          // [muted, very light, light, regular]
+          text: ["#BCC8D5", "#9AADC0", "#617181", "#3B4550"],
         },
         spacing: {
           xs: 8,
@@ -58,35 +59,83 @@ const MantineConfigProvider = ({ children }: IMantineConfigProviderProps) => {
           lg: 20,
           xl: 24,
         },
-      }}
-      defaultProps={{
-        Text: { component: "p" },
-        Paper: {
-          p: "md",
-          radius: "md",
-        },
-        ActionIcon: {
-          variant: "light",
-          color: "dark",
-        },
-        Tooltip: {
-          transition: "fade",
-          position: "bottom",
-          placement: "center",
-        },
-        Menu: {
-          transition: "fade",
-          p: "sm",
-        },
-        Container: {
-          p: 0,
-          m: 0,
-        },
-      }}
-      styles={{
-        Container: {
-          root: {
-            maxWidth: "unset",
+        components: {
+          Text: {
+            defaultProps: {
+              component: "p",
+            },
+            styles: {
+              root: {
+                lineHeight: "1.2",
+                whiteSpace: "pre-line",
+              },
+            },
+          },
+          Title: {
+            styles: {
+              root: {
+                fontWeight: 600,
+              },
+            },
+          },
+          Paper: {
+            defaultProps: {
+              radius: "md",
+            },
+          },
+          ActionIcon: {
+            defaultProps: {
+              variant: "light",
+              color: "dark",
+            },
+          },
+          Tooltip: {
+            defaultProps: {
+              transition: "fade",
+              position: "bottom",
+              placement: "center",
+            },
+          },
+          Menu: {
+            defaultProps: {
+              transition: "fade",
+            },
+          },
+          Container: {
+            styles: {
+              root: {
+                padding: 0,
+                margin: 0,
+                maxWidth: "unset",
+              },
+            },
+          },
+          Modal: {
+            styles: {
+              close: {
+                background: "#E0E1E2",
+              },
+              title: {
+                fontSize: "1.8rem",
+                fontWeight: 600,
+                color: "#3B4550",
+              },
+              body: {
+                paddingTop: ".5rem",
+                paddingBottom: ".5rem",
+              },
+            },
+          },
+          Input: {
+            styles: {
+              // don't add styles here
+              // it's shared amongst all components that extend input
+              input: {
+                // don't add padding here
+                // it creates scrollbars in textareas
+                color: "#3B4550",
+              },
+            },
           },
         },
       }}

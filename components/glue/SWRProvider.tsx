@@ -1,7 +1,6 @@
-import { showNotification } from "@mantine/notifications"
+import qs from "qs"
 import React from "react"
 import { SWRConfig } from "swr"
-import qs from "qs"
 
 interface ISWRProviderProps {
   children: React.ReactNode
@@ -12,7 +11,7 @@ const SWRProvider = ({ children }: ISWRProviderProps) => {
     <SWRConfig
       value={{
         errorRetryCount: 0,
-        fetcher: async (url, args) => {
+        fetcher: async ({ url, args }) => {
           const BASE_URL = "/api"
           const query = args ? `?${qs.stringify(args)}` : ""
           const completeUrl = `${BASE_URL}${url}${query}`
